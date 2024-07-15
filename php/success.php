@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="4;url=../index.php">
+    <meta http-equiv="refresh" content="4;url=login.php">
     <title>Blogger</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="icon" href="../bebo-logo.png" type="image/x-icon">
