@@ -10,10 +10,26 @@
 }
 
 .home-container{
-    height: 100dvh;
+    min-height: 100dvh;
     background-color: #373A40;
     display: grid;
     grid-template-columns: 25% 50% 25%;
+}
+
+header{
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DC5F00;
+    position: fixed;
+    width: 97dvw;
+}
+
+.center-head-child ul{
+    list-style-type: none;
+    display: inline-flex;
+    gap:15px;
 }
 
 .posts-container{
@@ -25,6 +41,7 @@
     gap:20px;
     padding: 10px;
     border-radius: 5px;
+    padding-top: 70px;
 }
 
 .post-card{
@@ -39,6 +56,12 @@
     justify-content: center;
     align-items: start;
     font-family: "Montserrat";
+}
+
+.post-stats{
+    display: flex;
+    width: 100%;
+    gap:10px;
 }
 
 .post-buttons{

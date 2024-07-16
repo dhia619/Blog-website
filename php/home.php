@@ -27,12 +27,18 @@ $posts = $retrieve_posts_query->get_result();
 
 <header>
     <div class="right-head-child">
-        <img>
+        <img src="../assets/bebo-logo.png">
     </div>
     <nav class="center-head-child">
-        <ul></ul>
+        <ul>
+            <li><img src="../assets/"></li>
+            <li><img src="../assets/"></li>
+            <li><img src="../assets/"></li>
+        </ul>
     </nav>
-    <div class="left-head-child"></div>
+    <div class="left-head-child">
+        <img src="../assets/avatar.png" width="32px">
+    </div>
 </header>
 
 <div class="home-container">
@@ -45,7 +51,7 @@ $posts = $retrieve_posts_query->get_result();
                     <div class="post-date"><?php echo htmlspecialchars($post["posting_date"]); ?></div>
                     <div class="post-content"><?php echo nl2br(htmlspecialchars($post["post_content"])); ?></div>
                     <div class="post-stats">
-                        <diV><span>0</span> Likes</div>
+                        <diV><span><?php echo htmlspecialchars($post["post_likes"]); ?></span> Likes</div>
                         <div><span>0</span> Comments</div>
                     </div>
                     <div class="post-buttons">
