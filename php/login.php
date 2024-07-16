@@ -8,7 +8,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogger</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="icon" href="../bebo-logo.png" type="image/x-icon">
+    <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
 </head>
 <body>
     <div class="container">

@@ -5,7 +5,7 @@
     <meta http-equiv="refresh" content="4;url=login.php">
     <title>Blogger</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="icon" href="../bebo-logo.png" type="image/x-icon">
+    <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
