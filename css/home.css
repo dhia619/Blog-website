@@ -13,7 +13,7 @@
     min-height: 100dvh;
     background-color: #373A40;
     display: grid;
-    grid-template-columns: 25% 50% 25%;
+    grid-template-columns: 27.5% 45% 27.5%;
 }
 
 header{
@@ -24,12 +24,23 @@ header{
     background-color: #DC5F00;
     position: fixed;
     width: 97dvw;
+    z-index: 999;
 }
 
 .center-head-child ul{
     list-style-type: none;
     display: inline-flex;
-    gap:15px;
+    gap: 35px;
+}
+
+.center-head-child ul li{
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.center-head-child ul li:hover{
+    background-color: rgba(180, 227, 128,0.2);
 }
 
 .posts-container{
@@ -41,7 +52,7 @@ header{
     gap:20px;
     padding: 10px;
     border-radius: 5px;
-    padding-top: 70px;
+    padding-top: 90px;
 }
 
 .post-card{
@@ -52,16 +63,36 @@ header{
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    gap:10px;
+    gap:20px;
     justify-content: center;
     align-items: start;
     font-family: "Montserrat";
+}
+
+.post-card .post-user_name{
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+
+.post-card .post-date{
+    font-size: 0.9em;
+    color: #536493;
+    letter-spacing: 1px;
+    position: relative;
+    top:-7px;
+}
+
+.post-card .post-content{
+    font-weight: 400;
+    font-size: 1em;
 }
 
 .post-stats{
     display: flex;
     width: 100%;
     gap:10px;
+    position: relative;
+    top:10px;
 }
 
 .post-buttons{
@@ -69,6 +100,8 @@ header{
     display: flex;
     justify-content: space-between;
     gap: 10px;
+    position: relative;
+    top:10px;
 }
 
 .post-buttons button{
@@ -86,9 +119,57 @@ header{
 }
 
 .post-buttons button:hover,.liked{
-    background-color: #DC5F00;
-    border-color: #DC5F00;
+    background-color: #EF5A6F;
+    border: 1px solid #EF5A6F;
 }
 
+.left-head-child{
+    cursor: pointer;
+    border: 1px solid transparent;
+} 
 
+.user_mini_panel{
+    position: absolute;
+    right: 15px;
+    background-color: #EEEEEE;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-family: Montserrat;
+}
 
+.user_mini_panel ul{
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mini_panel_username{
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+
+.user_mini_panel ul li a{
+    color:#102C57;
+    font-weight: 400;
+    font-size: 1em;
+}
+
+.user_mini_panel ul li a:hover{
+    color:#EF5A6F;
+}
+
+.horz_line{
+    border: 1px solid #686D76;
+    width: 100%;
+}
+
+a{
+    text-decoration: none;
+}

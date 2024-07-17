@@ -10,6 +10,7 @@ if (!$conn) {
 }
 mysqli_select_db($conn, "blogger") or die("error connecting to db");
 
+//function to see if the current user liked a post or not
 function userHasLiked($conn, $post_id, $user_id) {
     $query = $conn->prepare("SELECT * FROM user_likes WHERE post_id = ? AND user_id = ?");
     if (!$query) {
@@ -18,6 +19,16 @@ function userHasLiked($conn, $post_id, $user_id) {
     $query->bind_param("ii", $post_id, $user_id);
     $query->execute();
     return $query->get_result()->num_rows > 0;
+}
+
+//function to get the author of a post
+function get_username($conn,$user_id){
+    $query = $conn->prepare("SELECT * FROM user WHERE id= ?");
+    $query->bind_param("i", $user_id);
+    $query->execute();
+    $user_data = $query->get_result();
+    $user_data = $user_data->fetch_assoc();
+    return $user_data["username"];
 }
 
 # Prepare and execute the query
@@ -34,6 +45,7 @@ $posts = $retrieve_posts_query->get_result();
     <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
     <title>blogger-Home</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/home.js"></script>
     <script>
         $(document).ready(function() {
         $(".like-button").click(function(e) {
@@ -57,8 +69,11 @@ $posts = $retrieve_posts_query->get_result();
                         button.removeClass("liked"); // Remove 'liked' class
                         button.find(".button-text").text("Like");
                     }
-
-                    likeCountElement.text(response.likes);
+                    if(response.likes>=1000){
+                        likeCountElement.text(Math.floor(response.likes/1000)+" K");
+                    }
+                    else likeCountElement.text(response.likes);
+                    
                 }
             });
         });
@@ -70,17 +85,27 @@ $posts = $retrieve_posts_query->get_result();
 
 <header>
     <div class="right-head-child">
-        <img src="../assets/bebo-logo.png">
+        <a href="home.php"><img src="../assets/bebo-logo.png"></a>
     </div>
     <nav class="center-head-child">
         <ul>
-            <li><img src="../assets/"></li>
-            <li><img src="../assets/"></li>
-            <li><img src="../assets/"></li>
+            <li><a href="home.php"><img src="../assets/home.png" width="32px"></a></li>
+            <li><img src="../assets/chat.png" width="32px"></li>
+            <li><img src="../assets/groups.png" width="32px"></li>
         </ul>
     </nav>
     <div class="left-head-child">
-        <img src="../assets/avatar.png" width="32px">
+        <img id="user_mini_img" src="../assets/user.png" width="40px">
+        <div class="user_mini_panel">
+        <div class="mini_panel_username"><?php echo get_username($conn, $_SESSION["user_id"]); ?></div>
+        <div class="horz_line"></div>
+        <ul>
+            <li><a href="profile.php">Profile</a></li>
+            <li><a href="settings.php">Settings</a></li>
+            <li><a href="logout.php">Logout</a></li>
+        </ul>
+    </div>
+
     </div>
 </header>
 
@@ -90,11 +115,19 @@ $posts = $retrieve_posts_query->get_result();
         <?php if ($posts->num_rows >= 1): ?>
             <?php while ($post = $posts->fetch_assoc()): ?>
                 <div class="post-card">
-                    <div class="post-user_name"><?php echo htmlspecialchars($post["user_id"]); ?></div>
+                    <div class="post-user_name"><?php echo htmlspecialchars(get_username($conn,$post["user_id"])); ?></div>
                     <div class="post-date"><?php echo htmlspecialchars($post["posting_date"]); ?></div>
                     <div class="post-content"><?php echo nl2br(htmlspecialchars($post["post_content"])); ?></div>
                     <div class="post-stats">
-                        <div><span class="like-count"><?php echo htmlspecialchars($post["post_likes"]); ?></span> Likes</div>
+                        <div><span class="like-count">
+                            <?php 
+                            if (intval($post["post_likes"])>=1000){
+                                echo htmlspecialchars(floor(intval($post["post_likes"])/1000)." K");
+                            }
+                            else
+                                echo htmlspecialchars($post["post_likes"]);
+                            ?></span> Likes
+                        </div>
                         <div><span>0</span> Comments</div>
                     </div>
                     <div class="post-buttons">

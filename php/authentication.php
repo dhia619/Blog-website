@@ -20,6 +20,7 @@ function login($conn, $email, $password) {
                 setcookie("remember_me", "no", $cookie_expiration, "/", "", true, true);
                 $_SESSION["user_id"] = $user["id"];
             }
+            $_SESSION["username"] = $user["username"];
             header("Location: home.php");
             exit();
         } else {
