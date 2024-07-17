@@ -85,8 +85,10 @@ header{
     border: 1px solid #686D76;
 }
 
-.post-buttons button:hover{
+.post-buttons button:hover,.liked{
     background-color: #DC5F00;
     border-color: #DC5F00;
 }
+
+
 

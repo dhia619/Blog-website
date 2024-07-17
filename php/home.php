@@ -1,5 +1,8 @@
 <?php
-
+session_start();
+if(isset($_COOKIE["user_id"])){
+    $_SESSION["user_id"] = intval($_COOKIE["user_id"]);
+}
 # Connect to the database
 $conn = mysqli_connect("localhost", "root", "");
 if (!$conn) {
@@ -7,13 +10,21 @@ if (!$conn) {
 }
 mysqli_select_db($conn, "blogger") or die("error connecting to db");
 
+function userHasLiked($conn, $post_id, $user_id) {
+    $query = $conn->prepare("SELECT * FROM user_likes WHERE post_id = ? AND user_id = ?");
+    if (!$query) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $query->bind_param("ii", $post_id, $user_id);
+    $query->execute();
+    return $query->get_result()->num_rows > 0;
+}
+
 # Prepare and execute the query
 $retrieve_posts_query = $conn->prepare("SELECT * FROM post");
 $retrieve_posts_query->execute();
 $posts = $retrieve_posts_query->get_result();
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +33,36 @@ $posts = $retrieve_posts_query->get_result();
     <link rel="stylesheet" href="../css/home.css">
     <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
     <title>blogger-Home</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+        $(".like-button").click(function(e) {
+            e.preventDefault();
+
+            var postId = $(this).data("post-id");
+            var button = $(this);
+            var likeCountElement = $(this).closest(".post-card").find(".like-count");
+
+
+            $.ajax({
+                type: "POST",
+                url: "like_post.php",
+                data: { post_id: postId },
+                success: function(response) {
+                    console.log(response); // Log response for debugging
+                    if (response.liked) {
+                        button.addClass("liked"); // Add 'liked' class
+                    } else {
+                        button.removeClass("liked"); // Remove 'liked' class
+                    }
+
+                    likeCountElement.text(response.likes);
+                }
+            });
+        });
+        });
+
+    </script>
 </head>
 <body>
 
@@ -51,11 +92,11 @@ $posts = $retrieve_posts_query->get_result();
                     <div class="post-date"><?php echo htmlspecialchars($post["posting_date"]); ?></div>
                     <div class="post-content"><?php echo nl2br(htmlspecialchars($post["post_content"])); ?></div>
                     <div class="post-stats">
-                        <diV><span><?php echo htmlspecialchars($post["post_likes"]); ?></span> Likes</div>
+                        <div><span class="like-count"><?php echo htmlspecialchars($post["post_likes"]); ?></span> Likes</div>
                         <div><span>0</span> Comments</div>
                     </div>
                     <div class="post-buttons">
-                        <button>
+                        <button class="like-button" data-post-id="<?php echo $post['post_id']; ?>">
                             <img src="../assets/like.png" width="32px">
                             Like
                         </button>

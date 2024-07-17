@@ -10,13 +10,15 @@ function login($conn, $email, $password) {
     if ($login_result->num_rows == 1) {
         $user = $login_result->fetch_assoc();
         if (password_verify($password, $user['pwd'])) {
-            echo "Logged in successfully";
+            //echo "Logged in successfully";
+            $cookie_expiration = time() + (10 * 365 * 24 * 60 * 60); // 10 years
             if (isset($_POST["remember_me"])) {
-                $cookie_expiration = time() + (10 * 365 * 24 * 60 * 60); // 10 years
                 setcookie("remember_me", "yes", $cookie_expiration, "/", "", true, true);
+                setcookie("user_id",$user["id"],$cookie_expiration, "/", "", true, true);
             } else {
                 // Clear the cookie if "Remember me" is not checked
                 setcookie("remember_me", "no", $cookie_expiration, "/", "", true, true);
+                $_SESSION["user_id"] = $user["id"];
             }
             header("Location: home.php");
             exit();
