@@ -52,8 +52,10 @@ $posts = $retrieve_posts_query->get_result();
                     console.log(response); // Log response for debugging
                     if (response.liked) {
                         button.addClass("liked"); // Add 'liked' class
+                        button.find(".button-text").text("Liked");
                     } else {
                         button.removeClass("liked"); // Remove 'liked' class
+                        button.find(".button-text").text("Like");
                     }
 
                     likeCountElement.text(response.likes);
@@ -96,15 +98,24 @@ $posts = $retrieve_posts_query->get_result();
                         <div><span>0</span> Comments</div>
                     </div>
                     <div class="post-buttons">
+                    <?php 
+                    if(userHasLiked($conn, intval($post["post_id"]), intval($_SESSION["user_id"]))) { ?>
+                        <button class="like-button liked" data-post-id="<?php echo $post['post_id']; ?>">
+                            <img src="../assets/like.png" width="32px">
+                            <span class="button-text">Liked</span>
+                        </button>
+                    <?php } else { ?>
                         <button class="like-button" data-post-id="<?php echo $post['post_id']; ?>">
                             <img src="../assets/like.png" width="32px">
-                            Like
+                            <span class="button-text">Like</span>
                         </button>
-                        <button>
-                            <img src="../assets/comment.png" width="32px">
-                            Comments
-                        </button>
-                    </div>
+                    <?php } ?>
+                    <button>
+                        <img src="../assets/comment.png" width="32px">
+                        Comments
+                    </button>
+                </div>
+
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
