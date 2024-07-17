@@ -24,7 +24,7 @@
     <div class="message">
         Registration successful! You will be redirected to the login page shortly.
         <div>
-            <img src="../loading.gif" width="64px">
+            <img src="../assets/loading.gif" width="64px">
         </div>
     </div>
 </body>

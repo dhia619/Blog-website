@@ -46,40 +46,6 @@ $posts = $retrieve_posts_query->get_result();
     <title>blogger-Home</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/home.js"></script>
-    <script>
-        $(document).ready(function() {
-        $(".like-button").click(function(e) {
-            e.preventDefault();
-
-            var postId = $(this).data("post-id");
-            var button = $(this);
-            var likeCountElement = $(this).closest(".post-card").find(".like-count");
-
-
-            $.ajax({
-                type: "POST",
-                url: "like_post.php",
-                data: { post_id: postId },
-                success: function(response) {
-                    console.log(response); // Log response for debugging
-                    if (response.liked) {
-                        button.addClass("liked"); // Add 'liked' class
-                        button.find(".button-text").text("Liked");
-                    } else {
-                        button.removeClass("liked"); // Remove 'liked' class
-                        button.find(".button-text").text("Like");
-                    }
-                    if(response.likes>=1000){
-                        likeCountElement.text(Math.floor(response.likes/1000)+" K");
-                    }
-                    else likeCountElement.text(response.likes);
-                    
-                }
-            });
-        });
-        });
-
-    </script>
 </head>
 <body>
 
