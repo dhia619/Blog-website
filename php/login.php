@@ -16,14 +16,14 @@ session_start();
             <h1>Blogger</h1>
             <p>A place where you can post blogs without any restrictions</p>
         </div>
-        <form method="POST" action="authentication.php">
+        <form id="login-form" method="POST" action="authentication.php">
             <?php if (isset($_SESSION['error'])): ?>
                 <div class="error"><?php echo htmlspecialchars($_SESSION['error']); ?></div>
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
             <input type="hidden" name="form_type" value="signin">
-            <input placeholder="Email" type="email" name="email" required>
-            <input placeholder="Password" type="password" name="password" required>
+            <input placeholder="Email" type="text" id="email" name="email" required>
+            <input placeholder="Password" type="password" id="password" name="password" required>
             <div class="side-to-side-only">
                 <span style="display:flex;gap:10px;">
                     <input type="checkbox" id="remember-me" name="remember_me">
@@ -34,8 +34,8 @@ session_start();
             <input type="submit" value="Sign in">
             <div class="no-account">don't have an account?<span><a href="signup.php">Sign up</a></span></div>
         </form>
-        <footer>
-        </footer>
+        <footer></footer>
     </div>
+    <script src="../js/main.js"></script>
 </body>
 </html>

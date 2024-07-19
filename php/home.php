@@ -96,16 +96,17 @@ $posts = $retrieve_posts_query->get_result();
                         </div>
                         <div><span>0</span> Comments</div>
                     </div>
+                    <div class="horz_line"></div>
                     <div class="post-buttons">
                     <?php 
                     if(userHasLiked($conn, intval($post["post_id"]), intval($_SESSION["user_id"]))) { ?>
                         <button class="like-button liked" data-post-id="<?php echo $post['post_id']; ?>">
-                            <img src="../assets/like.png" width="32px">
+                            <img class="button-image" src="../assets/liked.png" width="32px">
                             <span class="button-text">Liked</span>
                         </button>
                     <?php } else { ?>
                         <button class="like-button" data-post-id="<?php echo $post['post_id']; ?>">
-                            <img src="../assets/like.png" width="32px">
+                            <img class="button-image" src="../assets/like.png" width="32px">
                             <span class="button-text">Like</span>
                         </button>
                     <?php } ?>

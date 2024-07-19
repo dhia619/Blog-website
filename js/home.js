@@ -23,9 +23,11 @@ $(document).ready(function(){
                 if (response.liked) {
                     button.addClass("liked"); // Add 'liked' class
                     button.find(".button-text").text("Liked");
+                    button.find(".button-image").attr("src", "../assets/liked.png");;
                 } else {
                     button.removeClass("liked"); // Remove 'liked' class
                     button.find(".button-text").text("Like");
+                    button.find(".button-image").attr("src", "../assets/like.png");;
                 }
                 if(response.likes>=1000){
                     likeCountElement.text(Math.floor(response.likes/1000)+" K");

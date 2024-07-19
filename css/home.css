@@ -11,7 +11,7 @@
 
 .home-container{
     min-height: 100dvh;
-    background-color: #373A40;
+    background-color: #2F3645;
     display: grid;
     grid-template-columns: 27.5% 45% 27.5%;
 }
@@ -44,7 +44,6 @@ header{
 }
 
 .posts-container{
-    background-color: #686D76;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -57,10 +56,10 @@ header{
 
 .post-card{
     box-sizing: border-box;
-    padding: 20px 10px;
-    background-color: #EEEEEE;
+    padding: 10px 10px;
+    background-color: #F5F7F8;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap:20px;
@@ -87,6 +86,11 @@ header{
     font-size: 1em;
 }
 
+.posts-container .horz_line{
+    position: relative;
+    top:10px;
+}
+
 .post-stats{
     display: flex;
     width: 100%;
@@ -100,8 +104,6 @@ header{
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    position: relative;
-    top:10px;
 }
 
 .post-buttons button{
@@ -109,18 +111,17 @@ header{
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 7.5px;
     padding: 10px 0;
     cursor: pointer;
     transition: .5s;
     gap: 10px;
     font-size: 1.2em;
-    border: 1px solid #686D76;
+    border: none;
 }
 
 .post-buttons button:hover,.liked{
     background-color: #EF5A6F;
-    border: 1px solid #EF5A6F;
 }
 
 .left-head-child{
