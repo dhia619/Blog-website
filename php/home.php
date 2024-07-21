@@ -10,26 +10,7 @@ if (!$conn) {
 }
 mysqli_select_db($conn, "blogger") or die("error connecting to db");
 
-//function to see if the current user liked a post or not
-function userHasLiked($conn, $post_id, $user_id) {
-    $query = $conn->prepare("SELECT * FROM user_likes WHERE post_id = ? AND user_id = ?");
-    if (!$query) {
-        die("Prepare failed: " . $conn->error);
-    }
-    $query->bind_param("ii", $post_id, $user_id);
-    $query->execute();
-    return $query->get_result()->num_rows > 0;
-}
-
-//function to get the author of a post
-function get_username($conn,$user_id){
-    $query = $conn->prepare("SELECT * FROM user WHERE id= ?");
-    $query->bind_param("i", $user_id);
-    $query->execute();
-    $user_data = $query->get_result();
-    $user_data = $user_data->fetch_assoc();
-    return $user_data["username"];
-}
+include "functions.php";
 
 # Prepare and execute the query
 $retrieve_posts_query = $conn->prepare("SELECT * FROM post");
@@ -77,7 +58,7 @@ $posts = $retrieve_posts_query->get_result();
 
 <div class="home-container">
     <div class="right-child"></div>
-    <div class="posts-container">
+    <div class="feed-container">
         <div class="create-a-post post-card">
             <div class="upper-child">
                 Post Something
@@ -92,49 +73,51 @@ $posts = $retrieve_posts_query->get_result();
                 </div>
             </div>
         </div>
-        <?php if ($posts->num_rows >= 1): ?>
-            <?php while ($post = $posts->fetch_assoc()): ?>
-                <div class="post-card">
-                    <div class="post-user_name"><?php echo htmlspecialchars(get_username($conn,$post["user_id"])); ?></div>
-                    <div class="post-date"><?php echo htmlspecialchars($post["posting_date"]); ?></div>
-                    <div class="post-content"><?php echo nl2br(htmlspecialchars($post["post_content"])); ?></div>
-                    <div class="post-stats">
-                        <div><span class="like-count">
-                            <?php 
-                            if (intval($post["post_likes"])>=1000){
-                                echo htmlspecialchars(floor(intval($post["post_likes"])/1000)." K");
-                            }
-                            else
-                                echo htmlspecialchars($post["post_likes"]);
-                            ?></span> Likes
+        <div class="posts-container">
+            <?php if ($posts->num_rows >= 1): ?>
+                <?php while ($post = $posts->fetch_assoc()): ?>
+                    <div class="post-card">
+                        <div class="post-user_name"><?php echo htmlspecialchars(get_username($conn,$post["user_id"])); ?></div>
+                        <div class="post-date"><?php echo htmlspecialchars($post["posting_date"]); ?></div>
+                        <div class="post-content"><?php echo nl2br(htmlspecialchars($post["post_content"])); ?></div>
+                        <div class="post-stats">
+                            <div><span class="like-count">
+                                <?php 
+                                if (intval($post["post_likes"])>=1000){
+                                    echo htmlspecialchars(floor(intval($post["post_likes"])/1000)." K");
+                                }
+                                else
+                                    echo htmlspecialchars($post["post_likes"]);
+                                ?></span> Likes
+                            </div>
+                            <div><span>0</span> Comments</div>
                         </div>
-                        <div><span>0</span> Comments</div>
+                        <div class="horz_line"></div>
+                        <div class="post-buttons">
+                        <?php 
+                        if(userHasLiked($conn, intval($post["post_id"]), intval($_SESSION["user_id"]))) { ?>
+                            <button class="like-button liked" data-post-id="<?php echo $post['post_id']; ?>">
+                                <img class="button-image" src="../assets/liked.png" width="32px">
+                                <span class="button-text">Liked</span>
+                            </button>
+                        <?php } else { ?>
+                            <button class="like-button" data-post-id="<?php echo $post['post_id']; ?>">
+                                <img class="button-image" src="../assets/like.png" width="32px">
+                                <span class="button-text">Like</span>
+                            </button>
+                        <?php } ?>
+                        <button class="comment-button" data-post-id="<?php echo $post['post_id']; ?>">
+                            <img src="../assets/comment.png" width="32px">
+                            Comments
+                        </button>
                     </div>
-                    <div class="horz_line"></div>
-                    <div class="post-buttons">
-                    <?php 
-                    if(userHasLiked($conn, intval($post["post_id"]), intval($_SESSION["user_id"]))) { ?>
-                        <button class="like-button liked" data-post-id="<?php echo $post['post_id']; ?>">
-                            <img class="button-image" src="../assets/liked.png" width="32px">
-                            <span class="button-text">Liked</span>
-                        </button>
-                    <?php } else { ?>
-                        <button class="like-button" data-post-id="<?php echo $post['post_id']; ?>">
-                            <img class="button-image" src="../assets/like.png" width="32px">
-                            <span class="button-text">Like</span>
-                        </button>
-                    <?php } ?>
-                    <button class="comment-button" data-post-id="<?php echo $post['post_id']; ?>">
-                        <img src="../assets/comment.png" width="32px">
-                        Comments
-                    </button>
-                </div>
 
-                </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p>No posts available.</p>
-        <?php endif; ?>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No posts available.</p>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="left-child"></div>
 </div>
@@ -154,7 +137,7 @@ $posts = $retrieve_posts_query->get_result();
                 Post
                 <div class="horz_line"></div>
             </div>
-            <div class="create-space">
+            <div class="create-space" id="create-post-form">
                 <textarea id="postContent" name="postContent" rows="8" cols="50" placeholder="What's on your mind?"></textarea>
                 <div class="create-a-post-buttons">
                     <div class="attach-buttons">
@@ -168,6 +151,7 @@ $posts = $retrieve_posts_query->get_result();
         </div>
     </div>
 </div>
+<div id="message"></div> <!-- To display the success or error message -->
 
 </body>
 </html>

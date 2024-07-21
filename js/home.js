@@ -1,10 +1,62 @@
-
 $(document).ready(function(){
     
     //create a post
 
     $(".create-a-post").click(function(){
         $(".create-post-popup").fadeIn("slow");
+    })
+
+    $(".post-button").click(function(){
+
+        var postContent = $('#postContent').val();
+
+        $.ajax({
+            url: 'create_post.php', // The PHP script that handles the form submission
+            type: 'POST',
+            data: {
+                postContent: postContent
+            },
+            dataType: 'json', // Ensure the response is interpreted as JSON
+            success: function(response) {
+                if (response.error) {
+                    $('#message').html('<p>Error: ' + response.error + '</p>');
+                }
+                else{
+                    console.log("Post author:", response["username"]); // Log specific properties
+                    $(".create-post-popup").hide();
+                    //$('#message').html('<p>Post created successfully!</p>');
+
+                    $('.posts-container').prepend(`
+                        <div class="post-card">
+                            <div class="post-user_name">${response.username}</div>
+                            <div class="post-date">${response.posting_date}</div>
+                            <div class="post-content">${response.post_content}</div>
+                            <div class="post-stats">
+                                <div><span class="like-count">${response.post_likes}</span> Likes</div>
+                                <div><span>0</span> Comments</div>
+                            </div>
+                            <div class="horz_line"></div>
+                            <div class="post-buttons">
+                                <button class="like-button" data-post-id="${response.post_id}">
+                                    <img class="button-image" src="../assets/like.png" width="32px">
+                                    <span class="button-text">Like</span>
+                                </button>
+                                <button class="comment-button" data-post-id="${response.post_id}">
+                                    <img src="../assets/comment.png" width="32px">
+                                    Comments
+                                </button>
+                            </div>
+                        </div>
+                    `);
+
+                    // Clear the textarea
+                    $('#postContent').val('');
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#message').html('<p>Error creating post: ' + error + '</p>');
+            }
+        });
     })
 
 
@@ -22,7 +74,7 @@ $(document).ready(function(){
         var postId = $(this).data("post-id");
 
         $.ajax({
-            url: "get_comments.php",
+            url: "../php/get_comments.php",
             type: "GET",
             data: { post_id: postId },
             success: function(data) {

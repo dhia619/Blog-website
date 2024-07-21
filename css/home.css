@@ -14,6 +14,10 @@
     background-color: #2F3645;
     display: grid;
     grid-template-columns: 27.5% 45% 27.5%;
+    overflow: visible;
+    position: relative;
+    top:70px;
+    padding-top: 20px;
 }
 
 header{
@@ -43,6 +47,15 @@ header{
     background-color: rgba(180, 227, 128,0.2);
 }
 
+.feed-container{
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+}
+
 .posts-container{
     display: flex;
     flex-direction: column;
@@ -51,7 +64,6 @@ header{
     gap:20px;
     padding: 10px;
     border-radius: 5px;
-    padding-top: 90px;
 }
 
 .post-card{
@@ -200,6 +212,7 @@ a{
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
     font-family: Montserrat;
+    border-radius: 10px;
 }
 
 /* Close button */
