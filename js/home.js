@@ -1,13 +1,21 @@
 
 $(document).ready(function(){
     
-    //comments section
-    $(".comments-popup").hide();
-    
-    $(".close").click(function(){
-        $(".comments-popup").hide();
+    //create a post
+
+    $(".create-a-post").click(function(){
+        $(".create-post-popup").fadeIn("slow");
     })
 
+
+    //hiding any popup when page first loads or when close button is pressed
+    $(".popup").hide();
+    
+    $(".close").click(function(){
+        $(".popup").hide();
+    })
+    
+    //comments section
     $(".comment-button").click(function(){
         $(".comments-popup").fadeIn("slow");
         

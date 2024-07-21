@@ -177,7 +177,7 @@ a{
 
 
 /* Popup container */
-.comments-popup {
+.popup {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 9999; /* Sit on top */
@@ -199,6 +199,7 @@ a{
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    font-family: Montserrat;
 }
 
 /* Close button */
@@ -232,4 +233,96 @@ a{
 .comment-date {
     color: #888;
     font-size: 0.9em;
+}
+
+.upper-child{
+    width: 100%;
+}
+
+.create-a-post{
+    cursor: pointer;
+}
+
+.lower-child{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:15px;
+}
+
+.lower-child input[type="text"]{
+    font-family: Montserrat;
+    padding: 10px 20px;
+    border: none;
+    min-width: 70%;
+}
+
+.attach-buttons button{
+    background-color: transparent;
+    border: none;
+    cursor:pointer;
+}
+
+.create-a-post-buttons{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 5px ;
+}
+
+
+.create-post-popup .popup-content{
+    width: 45%;
+}
+
+#create-container{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.popup-header{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-space{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.create-space textarea{
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    padding: 10px 20px;
+    resize: none;
+}
+
+.create-space textarea:focus{
+    outline: none;
+}
+
+.create-space .create-a-post-buttons .attach-buttons{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:10px;
+}
+
+.create-a-post-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-button{
+    background-color: #EF5A6F;
+    padding: 10px 20px;
+    color: #EEEEEE;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
 }

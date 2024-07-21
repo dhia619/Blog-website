@@ -78,6 +78,20 @@ $posts = $retrieve_posts_query->get_result();
 <div class="home-container">
     <div class="right-child"></div>
     <div class="posts-container">
+        <div class="create-a-post post-card">
+            <div class="upper-child">
+                Post Something
+                <div class="horz_line"></div>
+            </div>
+            <div class="lower-child">
+                <input type="text" placeholder="What's on your mind ...">
+                <div class="attach-buttons">
+                    <button><img src="../assets/photo.png" width="40px"></button>
+                    <button><img src="../assets/video.png" width="40px"></button>
+                    <button><img src="../assets/music.png" width="40px"></button>
+                </div>
+            </div>
+        </div>
         <?php if ($posts->num_rows >= 1): ?>
             <?php while ($post = $posts->fetch_assoc()): ?>
                 <div class="post-card">
@@ -125,10 +139,33 @@ $posts = $retrieve_posts_query->get_result();
     <div class="left-child"></div>
 </div>
 
-<div class="comments-popup">
+<div class="comments-popup popup">
     <div class="popup-content">
         <span class="close">&times;</span>
         <div id="comments-container"></div>
+    </div>
+</div>
+
+<div class="create-post-popup popup">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <div id="create-container">
+            <div class="popup-header">
+                Post
+                <div class="horz_line"></div>
+            </div>
+            <div class="create-space">
+                <textarea id="postContent" name="postContent" rows="8" cols="50" placeholder="What's on your mind?"></textarea>
+                <div class="create-a-post-buttons">
+                    <div class="attach-buttons">
+                        <button><img src="../assets/photo.png" width="40px"></button>
+                        <button><img src="../assets/video.png" width="40px"></button>
+                        <button><img src="../assets/music.png" width="40px"></button>
+                    </div>
+                    <button class="post-button">Post</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
