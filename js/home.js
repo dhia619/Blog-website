@@ -1,17 +1,15 @@
-$(document).ready(function(){
-    
-    //create a post
+$(document).ready(function() {
 
-    $(".create-a-post").click(function(){
+    // Create a post
+    $(".create-a-post").click(function() {
         $(".create-post-popup").fadeIn("slow");
-    })
+    });
 
-    $(".post-button").click(function(){
-
+    $(".post-button").click(function() {
         var postContent = $('#postContent').val();
 
         $.ajax({
-            url: 'create_post.php', // The PHP script that handles the form submission
+            url: 'create_post.php',
             type: 'POST',
             data: {
                 postContent: postContent
@@ -20,12 +18,10 @@ $(document).ready(function(){
             success: function(response) {
                 if (response.error) {
                     $('#message').html('<p>Error: ' + response.error + '</p>');
-                }
-                else{
-                    console.log("Post author:", response["username"]); // Log specific properties
+                } else {
+                    console.log("Post author:", response.username); // Log specific properties
                     $(".create-post-popup").hide();
-                    //$('#message').html('<p>Post created successfully!</p>');
-
+                    
                     $('.posts-container').prepend(`
                         <div class="post-card">
                             <div class="post-user_name">${response.username}</div>
@@ -49,26 +45,24 @@ $(document).ready(function(){
                         </div>
                     `);
 
-                    // Clear the textarea
-                    $('#postContent').val('');
+                    $('#postContent').val(''); // Clear textarea
                 }
             },
             error: function(xhr, status, error) {
                 $('#message').html('<p>Error creating post: ' + error + '</p>');
             }
         });
-    })
+    });
 
-
-    //hiding any popup when page first loads or when close button is pressed
+    // Hide any popup when page first loads or when close button is pressed
     $(".popup").hide();
     
-    $(".close").click(function(){
-        $(".popup").hide();
-    })
-    
-    //comments section
-    $(".comment-button").click(function(){
+    $(".close").click(function() {
+        $(this).closest(".popup").fadeOut("slow");
+    });
+
+    // Comments section
+    $(document).on("click", ".comment-button", function() {
         $(".comments-popup").fadeIn("slow");
         
         var postId = $(this).data("post-id");
@@ -102,27 +96,21 @@ $(document).ready(function(){
                 console.error("AJAX Error:", status, error);
             }
         });
-        
-                
-        
-    })
-    
-    
+    });
 
-    //profile mini panel logic
+    // Profile mini panel logic
     $(".user_mini_panel").hide();
-    $("#user_mini_img").click(function(){
+    $("#user_mini_img").click(function() {
         $(".user_mini_panel").toggle("slow");
-    })
+    });
 
-    //like button logic
-    $(".like-button").click(function(e) {
+    // Like button logic
+    $(document).on("click", ".like-button", function(e) {
         e.preventDefault();
 
         var postId = $(this).data("post-id");
         var button = $(this);
         var likeCountElement = $(this).closest(".post-card").find(".like-count");
-
 
         $.ajax({
             type: "POST",
@@ -133,19 +121,21 @@ $(document).ready(function(){
                 if (response.liked) {
                     button.addClass("liked"); // Add 'liked' class
                     button.find(".button-text").text("Liked");
-                    button.find(".button-image").attr("src", "../assets/liked.png");;
+                    button.find(".button-image").attr("src", "../assets/liked.png");
                 } else {
                     button.removeClass("liked"); // Remove 'liked' class
                     button.find(".button-text").text("Like");
-                    button.find(".button-image").attr("src", "../assets/like.png");;
+                    button.find(".button-image").attr("src", "../assets/like.png");
                 }
-                if(response.likes>=1000){
-                    likeCountElement.text(Math.floor(response.likes/1000)+" K");
+                if (response.likes >= 1000) {
+                    likeCountElement.text(Math.floor(response.likes / 1000) + " K");
+                } else {
+                    likeCountElement.text(response.likes);
                 }
-                else likeCountElement.text(response.likes);
-                
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error:", status, error);
             }
         });
     });
-
-})
+});
