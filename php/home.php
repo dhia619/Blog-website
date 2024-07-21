@@ -110,7 +110,7 @@ $posts = $retrieve_posts_query->get_result();
                             <span class="button-text">Like</span>
                         </button>
                     <?php } ?>
-                    <button>
+                    <button class="comment-button" data-post-id="<?php echo $post['post_id']; ?>">
                         <img src="../assets/comment.png" width="32px">
                         Comments
                     </button>
@@ -124,6 +124,14 @@ $posts = $retrieve_posts_query->get_result();
     </div>
     <div class="left-child"></div>
 </div>
+
+<div class="comments-popup">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <div id="comments-container"></div>
+    </div>
+</div>
+
 </body>
 </html>
 
