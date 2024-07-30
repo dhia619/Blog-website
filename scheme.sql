@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS user (
     email VARCHAR(100) NOT NULL UNIQUE,
     pwd CHAR(64) NOT NULL,
     birthdate DATE NOT NULL;
+    user_profile_image VARCHAR(1000) DEFAULT NULL,
+    user_cover_image VARCHAR(1000) DEFAULT NULL,
 );
 
 -- Create the posts table
