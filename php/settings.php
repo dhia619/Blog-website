@@ -21,6 +21,7 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
     <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
     <title>blogger-Home</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/settings.js"></script>
 </head>
 <body>
 
@@ -51,15 +52,15 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
                 </ul>
             </div>
             <div class="content-container">
-                <div class="general-settings">\
+                <div class="general-settings">
                     <div class="profile-image-panel">
                         <div class="left-child">
-                            <img src="../assets/user.png">
+                            <img id="image-preview" src="../assets/user.png">
                         </div>
                         <div class="right-child">
                             <div class="upper-right-child">
-                                <button>Upload new photo</button>
-                                <button>Reset</button>
+                                <button type="button" id="upload-image-button">Upload new photo</button>
+                                <button type="button" id="reset-preview-image">Reset</button>
                             </div>
                             <div class="lower-right-child">
                                 Allowed JPG, GIF, PNG, Max size of 2MB
@@ -77,9 +78,10 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
             </div>
         </div>
         <div class="settings-validation-buttons">
-            <button>Save changes</button>
-            <button>Cancel</button>
+            <button type="button">Save changes</button>
+            <button >Cancel</button>
         </div>
+        <input type="file" id="choose-image-dialog" accept="image/*" style="display:none">
     </form>
 
 
@@ -87,6 +89,26 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
 </html>
 
 <?php
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $image = $_POST["image"];
+    if(!empty($image)){
+        echo json_encode(["message" => json_decode($image)]);
+        $query = "UPDATE user SET user_profile_image = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("si", $image, $_SESSION["user_id"]);
+        if ($stmt->execute()) {
+            echo json_encode(["message" => "Profile image updated successfully."]);
+        } else {
+            echo json_encode(["message" => "Database update failed: " . $stmt->error]);
+        }
+
+        $stmt->close();
+    }
+
+}
+
+
 # Close the database connection
 $conn->close();
 ?>

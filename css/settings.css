@@ -56,7 +56,7 @@ body{
 }
 
 .navigation-menu ul li:hover{
-    background-color: rgba(224, 231, 216, 0.2);;
+    color:#EF5A6F;
 }
 
 .general-settings{
@@ -96,6 +96,12 @@ body{
     cursor: pointer;
 }
 
+#image-preview{
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
 .general-info-panel{
     display: flex;
     flex-direction: column;
@@ -119,7 +125,7 @@ body{
 }
 
 .settings-validation-buttons button{
-    padding: 5px 15px;
+    padding: 10px 15px;
     border: 1px solid #EF5A6F;
     background-color: #FFF8F3;
     cursor: pointer;
