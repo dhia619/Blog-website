@@ -1,13 +1,13 @@
 $(document).ready(function() {
-
+    
     // Create a post
     $(".create-a-post").click(function() {
         $(".create-post-popup").fadeIn("slow");
     });
-
+    
     $(".post-button").click(function() {
         var postContent = $('#postContent').val();
-
+        
         $.ajax({
             url: 'create_post.php',
             type: 'POST',
@@ -24,59 +24,62 @@ $(document).ready(function() {
                     
                     $('.posts-container').prepend(`
                         <div class="post-card">
-                            <div class="post-user_name">${response.username}</div>
-                            <div class="post-date">${response.posting_date}</div>
-                            <div class="post-content">${response.post_content}</div>
-                            <div class="post-stats">
-                                <div><span class="like-count">${response.post_likes}</span> Likes</div>
-                                <div><span>0</span> Comments</div>
-                            </div>
-                            <div class="horz_line"></div>
-                            <div class="post-buttons">
-                                <button class="like-button" data-post-id="${response.post_id}">
-                                    <img class="button-image" src="../assets/like.png" width="32px">
-                                    <span class="button-text">Like</span>
-                                </button>
-                                <button class="comment-button" data-post-id="${response.post_id}">
-                                    <img src="../assets/comment.png" width="32px">
-                                    Comments
-                                </button>
-                            </div>
+                        <div class="post-user_name">${response.username}</div>
+                        <div class="post-date">${response.posting_date}</div>
+                        <div class="post-content">${response.post_content}</div>
+                        <div class="post-stats">
+                        <div><span class="like-count">${response.post_likes}</span> Likes</div>
+                        <div><span>0</span> Comments</div>
                         </div>
-                    `);
-
-                    $('#postContent').val(''); // Clear textarea
+                        <div class="horz_line"></div>
+                        <div class="post-buttons">
+                        <button class="like-button" data-post-id="${response.post_id}">
+                        <img class="button-image" src="../assets/like.png" width="32px">
+                        <span class="button-text">Like</span>
+                        </button>
+                        <button class="comment-button" data-post-id="${response.post_id}">
+                        <img src="../assets/comment.png" width="32px">
+                        Comments
+                        </button>
+                        </div>
+                        </div>
+                        `);
+                        
+                        $('#postContent').val(''); // Clear textarea
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#message').html('<p>Error creating post: ' + error + '</p>');
                 }
-            },
-            error: function(xhr, status, error) {
-                $('#message').html('<p>Error creating post: ' + error + '</p>');
-            }
+            });
         });
-    });
-
-    // Hide any popup when page first loads or when close button is pressed
-    $(".popup").hide();
-    
-    $(".close").click(function() {
-        $(this).closest(".popup").fadeOut("slow");
-    });
-
-    // Comments section
-    $(document).on("click", ".comment-button", function() {
-        $(".comments-popup").fadeIn("slow");
         
-        var postId = $(this).data("post-id");
-
-        $.ajax({
-            url: "../php/get_comments.php",
-            type: "GET",
-            data: { post_id: postId },
-            success: function(data) {
-                console.log("Response from server:", data); // Log the response
-                try {
-                    var comments = JSON.parse(data);
-                    var commentsHtml = "";
+        // Hide any popup when page first loads or when close button is pressed
+        $(".popup").hide();
         
+        $(".close").click(function() {
+            $(this).closest(".popup").fadeOut("slow");
+        });
+        
+        // Comments section
+        $(".comment-button").click(function(){
+            $(".comments-popup").fadeIn("slow");
+            
+            let commentContent = $("#write-comment input");
+            var postId = $(this).data("post-id");
+            var commentsHtml = "";
+
+            commentContent.val("");
+            
+            $.ajax({
+                url: "../php/get_comments.php",
+                type: "GET",
+                data: { post_id: postId },
+                success: function(data) {
+                    //console.log("Response from server:", data); // Log the response
+                    try {
+                        var comments = JSON.parse(data);
+                        
                     comments.forEach(function(comment) {
                         commentsHtml += `
                             <div class="comment">
@@ -96,6 +99,30 @@ $(document).ready(function() {
                 console.error("AJAX Error:", status, error);
             }
         });
+
+        //submit a comment handling
+        $("#write-comment button").click(function(){
+            $.ajax({
+                url: "../php/create_comment.php",
+                type: "POST",
+                data: { comment_content : commentContent.val() ,
+                    post_id : postId
+                },
+                success:function(comment){
+                    console.log(comment);
+                    comment = JSON.parse(comment);
+                    commentsHtml += `
+                            <div class="comment">
+                                <div class="comment-user">${comment.username}</div>
+                                <div class="comment-date">${comment.comment_date}</div>
+                                <div class="comment-content">${comment.comment_content}</div>
+                            </div>
+                        `;
+                    $("#comments-container").html(commentsHtml);
+                }
+            }) 
+    })
+
     });
 
     // Profile mini panel logic

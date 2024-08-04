@@ -5,6 +5,7 @@ $(document).ready(function() {
     const resetPreviewButton = $("#reset-preview-image");
     const saveChangesButton = $(".settings-validation-buttons button:nth-child(1)");
     let base64Image = ""; // Store base64 image data
+    let newUsername = "";
     
     // Open the file dialog when the upload button is clicked
     uploadButton.click(function() {
@@ -46,13 +47,15 @@ $(document).ready(function() {
     
     //save changes
     saveChangesButton.click(function(){
-
+        newUsername = $(".general-info-panel input").val();
         $.ajax({
             url: '../php/settings.php',
             type: 'POST',
-            data: {image:base64Image},
+            data: {image:base64Image,
+                username:newUsername
+            },
             success:function(response){
-                console.log(response);
+                console.log(response.message);
             }
         })
     })

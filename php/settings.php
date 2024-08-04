@@ -20,7 +20,8 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
     <title>blogger-Home</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+    <script src="../js/jquery-3.7.0.min.js"></script> 
     <script src="../js/settings.js"></script>
 </head>
 <body>
@@ -69,7 +70,7 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
                     </div>
                     <div class="general-info-panel">
                         <label>Username</label>
-                        <input type="text">
+                        <input id="piwpiw" type="text">
                     </div>
                 </div>
                 <div class="change-password-settings"></div>
@@ -92,11 +93,12 @@ mysqli_select_db($conn, "blogger") or die("error connecting to db");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = $_POST["image"];
+    $username = $_POST["username"];
     if(!empty($image)){
         echo json_encode(["message" => json_decode($image)]);
-        $query = "UPDATE user SET user_profile_image = ? WHERE id = ?";
+        $query = "UPDATE user SET user_profile_image = ?,username = ? WHERE id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("si", $image, $_SESSION["user_id"]);
+        $stmt->bind_param("ssi", $image, $username ,$_SESSION["user_id"]);
         if ($stmt->execute()) {
             echo json_encode(["message" => "Profile image updated successfully."]);
         } else {

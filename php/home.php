@@ -25,7 +25,8 @@ $posts = $retrieve_posts_query->get_result();
     <link rel="stylesheet" href="../css/home.css">
     <link rel="icon" href="../assets/bebo-logo.png" type="image/x-icon">
     <title>blogger-Home</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+    <script src="../js/jquery-3.7.0.min.js"></script> 
     <script src="../js/home.js"></script>
 </head>
 <body>
@@ -77,7 +78,10 @@ $posts = $retrieve_posts_query->get_result();
             <?php if ($posts->num_rows >= 1): ?>
                 <?php while ($post = $posts->fetch_assoc()): ?>
                     <div class="post-card">
-                        <div class="post-user_name"><?php echo htmlspecialchars(get_username($conn,$post["user_id"])); ?></div>
+                        <div style="display:flex;justify-content:center;align-items:center;gap:10px">
+                            <div class="post-user_profile_picture"><img src="../assets/user.png" width=40px></div>
+                            <div class="post-user_name"><?php echo htmlspecialchars(get_username($conn,$post["user_id"])); ?></div>
+                        </div>    
                         <div class="post-date"><?php echo htmlspecialchars($post["posting_date"]); ?></div>
                         <div class="post-content"><?php echo nl2br(htmlspecialchars($post["post_content"])); ?></div>
                         <div class="post-stats">
@@ -125,6 +129,10 @@ $posts = $retrieve_posts_query->get_result();
 <div class="comments-popup popup">
     <div class="popup-content">
         <span class="close">&times;</span>
+        <div id="write-comment">
+            <input type="text" placeholder="write a comment">
+            <button type="button"><img src="../assets/paper-plane.png"></button>
+        </div>
         <div id="comments-container"></div>
     </div>
 </div>
@@ -157,6 +165,7 @@ $posts = $retrieve_posts_query->get_result();
 </html>
 
 <?php
+
 # Close the database connection
 $conn->close();
 ?>

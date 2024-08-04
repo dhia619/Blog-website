@@ -213,6 +213,8 @@ a{
     width: 80%; /* Could be more or less, depending on screen size */
     font-family: Montserrat;
     border-radius: 10px;
+    max-height:600px;
+    overflow-y: scroll;
 }
 
 /* Close button */
@@ -338,4 +340,28 @@ a{
     border: none;
     cursor: pointer;
     border-radius: 5px;
+}
+
+#write-comment input[type="text"]{
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 95%;
+    border: none;
+    background-color: rgba(180, 227, 128,0.2);
+}
+
+#write-comment input[type="text"]:focus{
+    outline: none;
+}
+
+#write-comment button{
+    position: absolute;
+    left:85%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#write-comment button:hover{
+    background-color: rgba(180, 227, 128,0.2);
 }
